@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    // Define environment variables for Maven
-    environment {
-        MAVEN_HOME = tool 'Maven 3.9.4' // Name of the Maven tool defined in Jenkins
-        PATH = "$MAVEN_HOME/bin:$PATH"
-    }
-
     stages {
         stage('Checkout') {
             steps {
