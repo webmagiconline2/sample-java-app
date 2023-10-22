@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    // Define environment variables for Maven
+    environment {
+        MAVEN_HOME = tool 'Maven 3.9.4' // Name of the Maven tool defined in Jenkins
+        PATH = "$MAVEN_HOME/bin:$PATH"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -11,38 +17,17 @@ pipeline {
 
         stage('Unit Test') {
             steps {
-                // Run unit tests (e.g., using Maven or Gradle)
+                // Run Maven using the configured version
                 sh 'mvn clean test'
             }
         }
 
-        stage('Publish Test Results') {
-            steps {
-                // Publish test results (e.g., for JUnit or TestNG)
-                junit 'target/surefire-reports/*.xml'
-            }
-        }
-
-        stage('Code Coverage') {
-            steps {
-                // Generate code coverage report (e.g., using JaCoCo)
-                sh 'mvn jacoco:report'
-                // Archive the report for later reference
-                archiveArtifacts 'target/site/jacoco/index.html'
-            }
-        }
+        // (Other stages...)
 
         stage('Build') {
             steps {
-                // Build the source code (e.g., using Maven or Gradle)
+                // Build the source code using Maven
                 sh 'mvn clean package'
-            }
-        }
-
-        stage('Publish Artifact') {
-            steps {
-                // Publish the artifact (e.g., a JAR file)
-                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
             }
         }
     }
